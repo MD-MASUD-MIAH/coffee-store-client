@@ -1,4 +1,4 @@
-import React, { use } from 'react';
+import { use } from 'react';
 import { AuthContext } from './context/AuthContext';
 
 const SingIn = () => {
@@ -31,7 +31,7 @@ singInUser(email,password).then(res=>{
 
   }
 
-  fetch('http://localhost:4000/user',{
+  fetch('https://coffee-store-server-one-ashen.vercel.app/user',{
 
     method:'PATCH',
     headers:{

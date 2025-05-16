@@ -1,57 +1,69 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
-import { createBrowserRouter, RouterProvider } from 'react-router'
-import MainLayout from './layout/MainLayout.jsx'
-import Home from './Components/Home.jsx'
-import Addcoffee from './Components/Addcoffee.jsx'
-import UpdateCoffee from './Components/UpdateCoffee.jsx'
-import Coffeedeails from './Components/Coffeedeails.jsx'
-import SingIn from './Components/SingIn.jsx'
-import Singup from './Components/Singup.jsx'
-import AuthProvider from './Components/context/AuthProvider.jsx'
-import User from './Components/User.jsx'
-
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router";
+import Addcoffee from "./Components/Addcoffee.jsx";
+import Coffeedeails from "./Components/Coffeedeails.jsx";
+import AuthProvider from "./Components/context/AuthProvider.jsx";
+import Home from "./Components/Home.jsx";
+import SingIn from "./Components/SingIn.jsx";
+import Singup from "./Components/Singup.jsx";
+import UpdateCoffee from "./Components/UpdateCoffee.jsx";
+import User from "./Components/User.jsx";
+import "./index.css";
+import MainLayout from "./layout/MainLayout.jsx";
 
 const router = createBrowserRouter([
+  {
+    path: "/",
+    Component: MainLayout,
 
+    children: [
+      {
+        index: true,
 
-  {path:'/', Component:MainLayout,
+        loader: () =>
+          fetch("https://coffee-store-server-one-ashen.vercel.app/coffee"),
 
-    children:[
+        Component: Home,
+      },
 
-      {index:true,
-       
-       loader:()=>fetch('http://localhost:4000/coffee'),
-        
-        Component:Home},
+      { path: "addcoffee", Component: Addcoffee },
+      {
+        path: "updateCoffee/:id",
 
-      {path:"addcoffee",Component:Addcoffee },
-      {path:'updateCoffee/:id',
-        
-           loader:({params})=>fetch(`http://localhost:4000/coffee/${params.id}`),
-        Component:UpdateCoffee},
-      {path:'/coffee/:id',
-        
-        loader:({params})=>fetch(`http://localhost:4000/coffee/${params.id}`),
-        Component:Coffeedeails},
+        loader: ({ params }) =>
+          fetch(
+            `https://coffee-store-server-one-ashen.vercel.app/coffee/${params.id}`
+          ),
+        Component: UpdateCoffee,
+      },
+      {
+        path: "/coffee/:id",
 
-        {path:'singin',Component:SingIn},
-        {path:'singup',Component:Singup},
-        {path:'user',
-          
-          loader:()=>fetch('http://localhost:4000/user'),
-          Component:User}
-    ]
-  }
-])
+        loader: ({ params }) =>
+          fetch(
+            `https://coffee-store-server-one-ashen.vercel.app/coffee/${params.id}`
+          ),
+        Component: Coffeedeails,
+      },
 
-createRoot(document.getElementById('root')).render(
+      { path: "singin", Component: SingIn },
+      { path: "singup", Component: Singup },
+      {
+        path: "user",
+
+        loader: () =>
+          fetch("https://coffee-store-server-one-ashen.vercel.app/user"),
+        Component: User,
+      },
+    ],
+  },
+]);
+
+createRoot(document.getElementById("root")).render(
   <StrictMode>
- <AuthProvider>
-
-   <RouterProvider router={router}></RouterProvider>
- </AuthProvider>
-  </StrictMode>,
-)
+    <AuthProvider>
+      <RouterProvider router={router}></RouterProvider>
+    </AuthProvider>
+  </StrictMode>
+);
